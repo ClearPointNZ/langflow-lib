@@ -1,8 +1,7 @@
 FROM langflowai/langflow:latest
 
-#USER root
-#RUN chown -R root:root /app
-COPY requirements.txt /tmp/requirements.txt
+# add 3rd party libaries
+COPY comps_requirements.txt /tmp/requirements.txt
 
 RUN /app/.venv/bin/python -m ensurepip --upgrade && \
     /app/.venv/bin/python -m pip install --upgrade pip && \
@@ -10,5 +9,8 @@ RUN /app/.venv/bin/python -m ensurepip --upgrade && \
 
 RUN /app/.venv/bin/python -m pip install --no-cache-dir -r /tmp/requirements.txt
 
+# add components
+COPY components/ /app/components/
+ENV LANGFLOW_COMPONENTS_PATH=/app/components
 
 CMD ["langflow", "run"]
