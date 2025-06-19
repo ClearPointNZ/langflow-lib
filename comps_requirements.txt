@@ -1,3 +1,4 @@
 PyGithub
 atlassian-python-api
 jira
+evalidate

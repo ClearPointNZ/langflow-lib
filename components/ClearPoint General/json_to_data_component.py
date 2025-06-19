@@ -7,7 +7,7 @@ import json
 class JsonStringToDataComponent(Component):
     display_name = "JSON to Data"
     description = "This component converts a JSON string to a Data object."
-    icon = "braces"
+    icon = "file-json"
     name = "JsonStringToData"
 
     inputs = [
