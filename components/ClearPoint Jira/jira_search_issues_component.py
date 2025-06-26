@@ -2,6 +2,7 @@ from langflow.custom import Component
 from langflow.io import Output, SecretStrInput, MessageTextInput,StrInput,BoolInput
 from jira import JIRA
 from typing import List
+from langflow.schema import Data, DataFrame
 
 
 class JiraSearchIssuesComponent(Component):
@@ -50,8 +51,17 @@ class JiraSearchIssuesComponent(Component):
 
     outputs = [
         Output(
-            name="issues", display_name="List of Issues", method="search_issues"
-        )
+            name="issues", 
+            display_name="List of Issues", 
+            method="search_issues",
+            info="Matching issues as a list of Data objects."
+        ),
+        Output(
+            display_name="DataFrame of Issues",
+            name="dataframe",
+            method="build_dataframe",
+            info="Matching issues in DataFrame.",
+        ),
     ]
 
     def search_issues(self) -> List[Data]:
@@ -73,3 +83,13 @@ class JiraSearchIssuesComponent(Component):
         
         self.status = issues_list
         return issues_list
+    
+    def build_dataframe(self) -> DataFrame:
+        issues = self.search_issues()
+        rows = []
+        for issue in issues:
+            rows.append(dict(issue.data))
+
+        df_result = DataFrame(rows)
+        self.status = df_result  # store in self.status for logs
+        return df_result    
