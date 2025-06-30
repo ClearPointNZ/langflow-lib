@@ -47,12 +47,12 @@ class JiraAddCommentComponent(Component):
         Output(
             name="results", 
             display_name="Results", 
-            method="add_issue",
+            method="add_comment_to_issue",
             info="The results of the Jira comment add operation."
         )
     ]
 
-    def add_issue(self) -> Data:
+    def add_comment_to_issue(self) -> Data:
         jira = JIRA(server=self.JIRA_SERVER_URL, basic_auth=(self.JIRA_USERNAME, self.JIRA_API_KEY))
         
         results = jira.add_comment(self.issue_key,self.comment_text)                                   
