@@ -53,10 +53,19 @@ class JiraAddCommentComponent(Component):
     ]
 
     def add_comment_to_issue(self) -> Data:
+         # HACK: make copy of inputs to avoid race condition. not guareenteed to work.  See https://github.com/langflow-ai/langflow/issues/8791
+        issue_key = self.issue_key
+        comment_text = self.comment_text
+
+        # create the JIRA client
         jira = JIRA(server=self.JIRA_SERVER_URL, basic_auth=(self.JIRA_USERNAME, self.JIRA_API_KEY))
         
-        results = jira.add_comment(self.issue_key,self.comment_text)                                   
+        # add the comment to the issue
+        response = jira.add_comment(issue_key, comment_text)                                   
+
+        # build a results payload
+        results = {"comment_id": response["id"], "status": "Comment added successfully"}
     
-        self.status = results.raw
-        return Data(data=results.raw)
+        self.status = results.results
+        return Data(data=results.results)
     
