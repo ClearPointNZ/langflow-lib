@@ -53,7 +53,7 @@ class JiraAddCommentComponent(Component):
     ]
 
     def add_comment_to_issue(self) -> Data:
-         # HACK: make copy of inputs to avoid race condition. not guareenteed to work.  See https://github.com/langflow-ai/langflow/issues/8791
+        # HACK: make copy of inputs to avoid race condition. not guareenteed to work.  See https://github.com/langflow-ai/langflow/issues/8791
         issue_key = self.issue_key
         comment_text = self.comment_text
 
