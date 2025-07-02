@@ -65,11 +65,17 @@ class JiraSearchIssuesComponent(Component):
     ]
 
     def search_issues(self) -> List[Data]:
+        # HACK: make copy of inputs to avoid race condition. not guareenteed to work.  See https://github.com/langflow-ai/langflow/issues/8791
+        jql_query = self.jql_query
+        issue_fields = self.issue_fields
+
+        # create the JIRA client
         jira = JIRA(server=self.JIRA_SERVER_URL, basic_auth=(self.JIRA_USERNAME, self.JIRA_API_KEY))
 
-        
-        issues = jira.search_issues(self.jql_query, fields=self.issue_fields,json_result=True)
+        # do the search
+        issues = jira.search_issues(jql_query, fields=self.issue_fields,json_result=True)
 
+        # build list of issues, flattening fields if requested
         issues_list = []        
         for issue in issues["issues"]:
 
@@ -85,11 +91,16 @@ class JiraSearchIssuesComponent(Component):
         return issues_list
     
     def build_dataframe(self) -> DataFrame:
+        # trigger the saerch
         issues = self.search_issues()
+
+        # convert results to list of dict
         rows = []
         for issue in issues:
             rows.append(dict(issue.data))
 
+        # convert list of dict to DataFrame
         df_result = DataFrame(rows)
-        self.status = df_result  # store in self.status for logs
+
+        self.status = df_result  
         return df_result    

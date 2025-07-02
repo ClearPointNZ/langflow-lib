@@ -1,0 +1,18 @@
+# Docker compose file for local dev/testing of langflow-lib with peristence of config/flows
+services:
+  langflow:
+    build: .
+    # container is set up to run as user so need to run as root so that can write to config dir
+    user: root
+    # tty true so taht all logs are printed
+    tty: true
+    ports:
+      - "7860:7860"    
+    environment:      
+      - LANGFLOW_CONFIG_DIR=/app/langflow
+      - LANGFLOW_SAVE_DB_IN_CONFIG_DIR=true
+      - DO_NOT_TRACK=true
+    volumes:
+      - langflowlib-dev-data:/app/langflow
+volumes:  
+  langflowlib-dev-data:      

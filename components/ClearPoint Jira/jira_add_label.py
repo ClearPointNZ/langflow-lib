@@ -55,18 +55,25 @@ class JiraAddLabelToIssueComponent(Component):
     ]
 
     def add_label(self) -> Data:
+        # HACK: make copy of inputs to avoid race condition. not guareenteed to work.  See https://github.com/langflow-ai/langflow/issues/8791
+        issue_key = self.issue_key
+        label = self.label
+
+        # create the JIRA client
         jira = JIRA(server=self.JIRA_SERVER_URL, basic_auth=(self.JIRA_USERNAME, self.JIRA_API_KEY))
 
-        # grab the issue
-        issue = jira.issue(self.issue_key)
+        # grab the current labels for the issue
+        issue = jira.issue(issue_key, fields='labels')
         
         # add the label to the issue
-        issue.fields.labels.append(self.label)
+        issue.fields.labels.append(label)
+
         # update issue with the new label
         issue.update(fields={"labels": issue.fields.labels})   
 
-        issue = jira.issue(self.issue_key) # load the updated issue so we can get raw data TODO: add logic to avoid this second call                                
+        # build a results payload
+        results = {"issue_key": issue_key, "labels":  issue.fields.labels, "status": "Label added successfully"}
     
-        self.status = issue.raw
-        return Data(data=issue.raw)
+        self.status = results
+        return Data(data=results)
     
