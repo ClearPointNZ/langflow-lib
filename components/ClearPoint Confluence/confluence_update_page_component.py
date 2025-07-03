@@ -38,7 +38,7 @@ class ConfluenceUpdatePageComponent(Component):
         MultilineInput(
             name="content",
             display_name="Page Content",
-            info="The content to update the Confluence page with.",
+            info="The content to update the Confluence page with. Content must be formatted using Confluence's storage format.",
             tool_mode=True,
         )
     ]
