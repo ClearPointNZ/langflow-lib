@@ -77,8 +77,7 @@ class ConfluenceSearchPagesComponent(Component):
         
         # see https://github.com/atlassian-api/atlassian-python-api/blob/705b26f8674334d663847774e21a38d718cf0dd3/atlassian/confluence/__init__.py#L2748
         response = confluence.cql(cql_query,expand=expand_properties)
-        print(response)
-
+        
 
         # build list of pages
         pages_list = []        
