@@ -1,4 +1,34 @@
 # langflow-lib
+This is a collection of custom components for Langflow.
+
+## Components
+
+### General
+|Component|Description|
+|---|---|
+|Data If-Else|Routes a Data object to a corresponding output based on a boolean expression.|
+|First row|Takes the first row of a Dataframe and converts it to a Data object|
+|JSON to Data|Converts a JSON string to a Data object.|
+|Logger|Logs the passed in object and then passes it on unchanged. Useful for debugging.|
+
+### Confluence
+|Component|Description|
+|---|---|
+|Confluence Get Page|Fetches the content of a Confluence page by its page ID.|
+|Confluence Search Pages|Returns the matching pages in Confluence based on the provided CQL search query.|
+|Confluence Update Page|Updates the content of a Confluence page.|
+
+### GitHub
+|Component|Description|
+|---|---|
+|Github Get PR Changes|Returns the title, description, file names and the diffs of a pull request from a GitHub repository.|
+
+### Jira
+|Component|Description|
+|---|---|
+|Jira Add comment|Adds a comment to a Jira issue.|
+|Jira Add label to issue|Adds a label to a Jira issue.|
+|Jira Search Issues|Returns issues in Jira based on the provided JQL query.|
 
 ## How to Use
 
@@ -6,10 +36,10 @@
 You can use the prebuilt docker image that is based on the official langflow image but include the ClearPoint langflow-lib and the required dependencies.
 
 ```bash
-docker run --rm -it -p 7860:7860 ghcr.io/clearpointnz/langflow-lib:v0.1.0
+docker run --rm -it -p 7860:7860 ghcr.io/clearpointnz/langflow-lib:v0.2.0
 ```
 
-### via Bundle URLs
+### Via Bundle URLs
 Components can be pulled into your Langflow instance by setting the `LANGFLOW_BUNDLE_URLS` environment variable to the URL of this repository.
 
 For example:
